@@ -33,6 +33,7 @@ public final class GitLabAPI {
 
     public static GitLabAPI connect(String url, String token, boolean ignoreCertificateErrors, int requestTimeout) throws GitLabAPIException {
         try {
+            LOGGER.warning("GitlabAPI.connect(url, token);" + url);
             apiToken = token;
             GitlabAPI delegate = GitlabAPI.connect(url, token);
             delegate.ignoreCertificateErrors(ignoreCertificateErrors);
@@ -189,10 +190,14 @@ public final class GitLabAPI {
 
     public List<GitlabRepositoryTree> getTree(int id, String ref, String path) throws GitLabAPIException {
         try {
-            Query query = new Query()
-                    .appendIf("path", path)
-                    .appendIf("ref", ref);
-
+            Query query = new Query();
+            if(ref != null && !ref.isEmpty()) {
+                query.append("path", path);
+            }
+            if(ref != null && !ref.isEmpty()) {
+               query.append("ref", ref);
+            }
+            
             query.append("per_page","10000");
             String tailUrl = GitlabProject.URL + "/" + id + "/repository" + GitlabRepositoryTree.URL + query.toString();
             LOGGER.fine("tailurl: " + tailUrl);
