@@ -44,7 +44,7 @@ public final class GitLabSCMMergeRequestHead extends GitLabSCMHeadImpl implement
     }
 
     private GitLabSCMMergeRequestHead(int id, String title, String description, GitLabSCMHead source, GitLabSCMBranchHead target, boolean mergeable, boolean merge) {
-        super(source.getProjectId(), title + (merge ? "(merge)" : ""), source.getRevision().getHash(), Messages.GitLabSCMMergeRequest_Pronoun(), MERGE_REQUESTS);
+        super(source.getProjectId(), title, source.getRevision().getHash(), Messages.GitLabSCMMergeRequest_Pronoun(), MERGE_REQUESTS);
         this.id = id;
         this.title = title;
         this.description = description;

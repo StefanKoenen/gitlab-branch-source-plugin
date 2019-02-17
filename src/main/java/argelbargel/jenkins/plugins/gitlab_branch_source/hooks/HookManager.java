@@ -48,23 +48,25 @@ class HookManager {
         if (!hasListener(listener.id())) {
             throw new IllegalArgumentException("unknown listener with id: " + listener.id());
         }
+        LOGGER.info("acquiring listener for " + listener.url());
+        return;
 
-        ListenerState managed = managedListeners.get(listener.id());
-        if (!managed.isRegistered()) {
-            try {
-                GitLabAPI api = gitLabAPI(listener.connectionName());
-                if (listener.listensToSystem()) {
-                    LOGGER.info("registering system-hook for " + listener.id() + "...");
-                    api.registerSystemHook(listener.url());
-                } else {
-                    LOGGER.info("registering project-hook for " + listener.id() + "...");
-                    api.registerProjectHook(listener.url(), listener.projectId());
-                }
-                managed.register();
-            } catch (GitLabAPIException e) {
-                LOGGER.warning("could not register hook " + listener.url() + ": " + e.getMessage());
-            }
-        }
+//        ListenerState managed = managedListeners.get(listener.id());
+//        if (!managed.isRegistered()) {
+//            try {
+//                GitLabAPI api = gitLabAPI(listener.connectionName());
+//                if (listener.listensToSystem()) {
+//                    LOGGER.info("registering system-hook for " + listener.id() + "...");
+//                    api.registerSystemHook(listener.url());
+//                } else {
+//                    LOGGER.info("registering project-hook for " + listener.id() + "...");
+//                    api.registerProjectHook(listener.url(), listener.projectId());
+//                }
+//                managed.register();
+//            } catch (GitLabAPIException e) {
+//                LOGGER.warning("could not register hook " + listener.url() + ": " + e.getMessage());
+//            }
+//        }
     }
 
     private void removeListener(GitLabSCMWebHookListener listener, Item owner) {
