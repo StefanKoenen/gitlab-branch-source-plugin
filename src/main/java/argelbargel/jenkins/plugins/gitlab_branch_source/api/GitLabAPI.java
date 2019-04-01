@@ -33,7 +33,6 @@ public final class GitLabAPI {
 
     public static GitLabAPI connect(String url, String token, boolean ignoreCertificateErrors, int requestTimeout) throws GitLabAPIException {
         try {
-            LOGGER.warning("GitlabAPI.connect(url, token);" + url);
             apiToken = token;
             GitlabAPI delegate = GitlabAPI.connect(url, token);
             delegate.ignoreCertificateErrors(ignoreCertificateErrors);
@@ -92,8 +91,9 @@ public final class GitLabAPI {
     }
 
     public GitlabBranch getBranch(int projectId, String branch) throws GitLabAPIException {
+        String tailUrl = "";
         try {
-            String tailUrl = GitlabProject.URL + PATH_SEP + projectId + GitlabBranch.URL + PATH_SEP + URLEncoder.encode(branch, "UTF-8");
+            tailUrl = GitlabProject.URL + PATH_SEP + projectId + GitlabBranch.URL + PATH_SEP + URLEncoder.encode(branch, "UTF-8");
             tailUrl = tailUrl.replaceAll("//", "/");
             return delegate.retrieve().to(tailUrl, GitlabBranch.class);
         } catch (FileNotFoundException e) {
